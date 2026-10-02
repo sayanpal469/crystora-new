@@ -1,26 +1,195 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* "Shop by Purpose" tile colours are Tailwind classes stored in the database
+   (Homepage Manager), so they never appear in source — generate them explicitly. */
+@source inline("from-{slate,gray,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,100,200,300}/20");
+@source inline("to-{brand-primary,brand-secondary,brand-accent}/10");
+@source inline("to-{gray,red,orange,amber,yellow,green,emerald,teal,cyan,blue,indigo,purple,pink,rose}-{50,100,200}/10");
 
+/* Font families are self-hosted through next/font (see app/layout.tsx). */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-playfair), "Playfair Display", serif;
+  --font-sans: var(--font-outfit), "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-inter: var(--font-inter-family), "Inter", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {  
+  --color-brand-primary: hsl(30, 100%, 55%);
+  --color-brand-secondary: hsl(45, 100%, 65%);
+  --color-brand-accent: hsl(20, 90%, 50%);
+
+  --color-saffron: var(--color-brand-primary);
+  --color-saffron-dark: hsl(30, 100%, 45%);
+  --color-saffron-light: hsl(30, 100%, 95%);
+  
+  --color-divine-yellow: var(--color-brand-secondary);
+  
+  --color-surface-base: hsl(0, 0%, 98%);
+  --color-surface-soft: hsl(0, 0%, 95%);
+  --color-surface-deep: hsl(0, 0%, 90%);
+  
+  --color-text-main: hsl(210, 20%, 15%);
+  --color-text-soft: hsl(210, 10%, 45%);
+  --color-text-muted: hsl(210, 5%, 65%);
+
+  --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px -5px hsla(30, 100%, 55%, 0.3);
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-surface-base text-text-main antialiased selection:bg-brand-primary/20 selection:text-brand-accent;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .divine-glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-premium;
+  }
+
+  .divine-gradient {
+    @apply bg-gradient-to-br from-brand-primary via-brand-secondary to-brand-accent;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-tr from-brand-accent to-brand-primary bg-clip-text text-transparent;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-premium;
+  }
+}
+
+.om-watermark {
+  @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40vw] opacity-[0.03] pointer-events-none -z-10 font-serif;
+}
+
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Premium Range Input Styling - FORCED ORANGE */
+input[type="range"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  cursor: pointer;
+  height: 24px;
+  width: 100%;
+  accent-color: #f97316 !important;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #f97316 0%, #f97316 var(--range-progress), #e2e8f0 var(--range-progress), #e2e8f0 100%) !important;
+  border-radius: 10px;
+  height: 6px;
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  margin-top: -8px;
+  background-color: #ffffff !important;
+  border-radius: 50% !important;
+  height: 22px !important;
+  width: 22px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 3px solid #f97316 !important;
+  transition: all 0.2s ease;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.4) !important;
+}
+
+input[type="range"]::-moz-range-track {
+  background: linear-gradient(to right, #f97316 0%, #f97316 var(--range-progress), #e2e8f0 var(--range-progress), #e2e8f0 100%) !important;
+  border-radius: 10px;
+  height: 6px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background-color: #ffffff !important;
+  border: 3px solid #f97316 !important;
+  border-radius: 50% !important;
+  height: 18px !important;
+  width: 18px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.2s ease;
+}
+
+/* Blog post content styles */
+.blog-content {
+  color: #44403c;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+.blog-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1c1917;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.blog-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1c1917;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.blog-content p {
+  margin-bottom: 1.25rem;
+}
+.blog-content a {
+  color: #d97706;
+  text-decoration: none;
+}
+.blog-content a:hover {
+  text-decoration: underline;
+}
+.blog-content strong {
+  font-weight: 700;
+  color: #1c1917;
+}
+.blog-content em {
+  font-style: italic;
+}
+.blog-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.blog-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.blog-content li {
+  margin-bottom: 0.375rem;
+}
+.blog-content blockquote {
+  border-left: 4px solid #fcd34d;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #78716c;
+  margin: 1.5rem 0;
+}
+.blog-content img {
+  max-width: 100%;
+  border-radius: 1rem;
+  margin: 1.5rem 0;
+}
+.blog-content hr {
+  border-color: #e7e5e4;
+  margin: 2rem 0;
 }
